@@ -1,8 +1,6 @@
 from fastapi import  FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from app.db.session import get_db
-from app.services.diagnosis_services import find_diagnoses_service
-from app.services.string_matcher import find_best_matches
+from app.api.routes.diagnosis import router as diagnosis_router
 
 app = FastAPI()
 
@@ -14,10 +12,4 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.post("/summaries/find-diagnoses")
-def find_diagnoses(payload: dict, db=Depends(get_db)):
-    text = payload.get("text", "")
-
-    tree = find_diagnoses_service(db, text, find_best_matches)
-
-    return {"results": tree}
+app.include_router(diagnosis_router, prefix="/api")

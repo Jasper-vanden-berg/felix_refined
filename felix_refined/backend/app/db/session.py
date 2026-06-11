@@ -1,20 +1,11 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+import psycopg2
+import psycopg2.extras
 
-DATABASE_URL = "postgresql+psycopg2://felix:hersenbank@localhost:5432/felix"
-
-engine = create_engine(DATABASE_URL, pool_pre_ping=True)
-
-SessionLocal = sessionmaker(
-    autocommit=False,
-    autoflush=False,
-    bind=engine
-)
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+def get_conn():
+    return psycopg2.connect(
+        dbname="felix",
+        user="felix",
+        password="hersenbank",
+        host="localhost",
+        cursor_factory=psycopg2.extras.RealDictCursor
+    )

@@ -1,1 +1,0 @@
-export { FreezerList } from "./list";

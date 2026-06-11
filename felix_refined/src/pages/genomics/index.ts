@@ -1,1 +1,0 @@
-export { Genomics } from "./list";
